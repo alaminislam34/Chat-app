@@ -1,19 +1,22 @@
 "use client";
+
 import Link from "next/link";
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      // Step 1: Firebase Auth এ user create
+      // 1️⃣ Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -21,21 +24,28 @@ function SignUp() {
       );
       const firebaseUser = userCredential.user;
 
-      // Step 2: MongoDB API তে user save করা
+      // 2️⃣ MongoDB API
       const res = await axios.post("/api/auth/signup", {
         name,
         email,
         password,
-        uid: firebaseUser.uid, // 🔥 Firebase uid save করা হলো
+        uid: firebaseUser.uid,
       });
 
-      console.log("Signup Success:", res.data);
-      alert("Signup completed!");
+      // 3️⃣ Auto-login: save token & user info
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      // 4️⃣ Redirect / set user state
+      router.push("/"); // user now logged in
+
+      console.log("Signup & Login Success:", res.data);
     } catch (err: any) {
       console.error("Signup Error:", err.response?.data || err.message);
       alert(err.response?.data?.message || "Something went wrong");
     }
   };
+
   return (
     <div className="w-full h-full min-h-screen flex items-center justify-center">
       <form

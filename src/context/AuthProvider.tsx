@@ -19,7 +19,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-
 // custom hook
 export function useAuth() {
   const context = useContext(AuthContext);

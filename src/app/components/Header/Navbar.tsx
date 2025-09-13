@@ -1,6 +1,7 @@
 'use client'
 
 import { useAuth } from '@/context/AuthProvider';
+import Link from 'next/link';
 import React from 'react';
 
 // The Navbar component that uses the custom hook.
@@ -12,7 +13,7 @@ export default function Navbar() {
       <div className="container mx-auto flex justify-between items-center">
         {/* Your site logo or name */}
         <div className="text-xl font-bold text-gray-800">
-          My App
+         <Link href={'/'}> My App</Link>
         </div>
 
         {/* User status section */}
@@ -23,7 +24,7 @@ export default function Navbar() {
               <span className="text-gray-700">Hi, {user.name}</span>
             </div>
           ) : (
-            <span className="text-red-500">Not Logged In</span>
+            <Link href={'/login'}>Login</Link>
           )}
         </div>
       </div>

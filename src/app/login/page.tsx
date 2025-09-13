@@ -4,26 +4,35 @@ import Link from "next/link";
 import React, { useState } from "react";
 import axios from "axios";
 import { useAuth } from "@/context/AuthProvider";
+import { useRouter } from "next/navigation";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setUser } = useAuth();
+  const router = useRouter()
 
-  const handleLoginForm = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+const handleLoginForm = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    try {
-      const res = await axios.post("/api/auth/login", { email, password });
-      console.log("Login Success:", res.data);
+  try {
+    const res = await axios.post("/api/auth/login", { email, password });
 
-      setUser(res.data.user); // AuthContext এ save
-      alert(res.data.message);
-    } catch (err: any) {
-      console.error("Login Error:", err.response?.data || err.message);
-      alert(err.response?.data?.message || "Something went wrong");
-    }
-  };
+    // ✅ Save user & token
+    setUser(res.data.user); // AuthContext
+    localStorage.setItem("token", res.data.token); // JWT save
+    localStorage.setItem("user", JSON.stringify(res.data.user));
+
+    alert(res.data.message);
+
+    // ✅ Redirect to home
+    router.push("/");
+  } catch (err: any) {
+    console.error("Login Error:", err.response?.data || err.message);
+    alert(err.response?.data?.message || "Something went wrong");
+  }
+};
+
 
   return (
     <div className="flex items-center justify-center min-h-screen">

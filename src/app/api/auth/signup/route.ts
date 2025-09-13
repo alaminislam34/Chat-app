@@ -1,26 +1,30 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  await dbConnect();
-
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Only POST requests allowed" });
-  }
-
-  const { name, email, password, uid } = req.body;
-
-  if (!name || !email || !password || !uid) {
-    return res.status(400).json({ message: "All fields are required" });
-  }
-
+export async function POST(req: Request) {
   try {
+    await dbConnect();
+
+    const body = await req.json();
+    const { name, email, password, uid } = body;
+
+    if (!name || !email || !password || !uid) {
+      return NextResponse.json(
+        { message: "All fields are required" },
+        { status: 400 }
+      );
+    }
+
     // check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+      return NextResponse.json(
+        { message: "User already exists" },
+        { status: 400 }
+      );
     }
 
     // hash password
@@ -31,18 +35,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       name,
       email,
       password: hashedPassword,
-      uid
+      uid,
     });
 
-    res.status(201).json({
-      message: "User registered successfully",
-      user: {
-        id: newUser._id,
-        name: newUser.name,
-        email: newUser.email,
+    // generate JWT token for auto-login
+    const token = jwt.sign(
+      { id: newUser._id, email: newUser.email },
+      process.env.JWT_SECRET!,
+      { expiresIn: "7d" }
+    );
+
+    return NextResponse.json(
+      {
+        message: "User registered successfully",
+        user: {
+          id: newUser._id,
+          name: newUser.name,
+          email: newUser.email,
+        },
+        token, // send token to frontend
       },
-    });
+      { status: 201 }
+    );
   } catch (error) {
-    res.status(500).json({ message: "Something went wrong", error });
+    console.error(error);
+    return NextResponse.json(
+      { message: "Something went wrong", error },
+      { status: 500 }
+    );
   }
 }
