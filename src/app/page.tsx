@@ -6,11 +6,11 @@ import { MessageCircle, Users, Image, Send, ArrowRight } from 'lucide-react';
 function ChatLandingPage() {
   return (
     // Main container for the landing page, with a dark background and responsive padding
-    <div className="min-h-screen bg-gray-900 text-gray-100 font-sans">
+    <div className="min-h-screen font-sans">
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
       {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center min-h-[500px] md:min-h-[700px] text-center p-8 bg-gray-950">
+      <section className="flex flex-col items-center justify-center min-h-[500px] md:min-h-[700px] text-center p-8">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tighter mb-4">
             Connect with friends, effortlessly.
@@ -29,12 +29,12 @@ function ChatLandingPage() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 bg-gray-900">
+      <section id="features" className="py-20">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-12">Key Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             {/* Feature 1 */}
-            <div className="p-8 bg-gray-800 rounded-xl shadow-lg transform transition-transform hover:scale-105">
+            <div className="p-8 rounded-xl shadow-lg transform transition-transform hover:scale-105">
               <MessageCircle size={48} className="text-blue-500 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">Real-time Messaging</h3>
               <p className="text-gray-400 text-sm">
@@ -42,7 +42,7 @@ function ChatLandingPage() {
               </p>
             </div>
             {/* Feature 2 */}
-            <div className="p-8 bg-gray-800 rounded-xl shadow-lg transform transition-transform hover:scale-105">
+            <div className="p-8 rounded-xl shadow-lg transform transition-transform hover:scale-105">
               <Users size={48} className="text-purple-500 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">Group Chats</h3>
               <p className="text-gray-400 text-sm">
@@ -50,7 +50,7 @@ function ChatLandingPage() {
               </p>
             </div>
             {/* Feature 3 */}
-            <div className="p-8 bg-gray-800 rounded-xl shadow-lg transform transition-transform hover:scale-105">
+            <div className="p-8 rounded-xl shadow-lg transform transition-transform hover:scale-105">
               <Image size={48} className="text-green-500 mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">Media Sharing</h3>
               <p className="text-gray-400 text-sm">
@@ -62,7 +62,7 @@ function ChatLandingPage() {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-20 bg-gray-950">
+      <section className="py-20">
         <div className="container mx-auto px-6 text-center max-w-2xl">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to start chatting?</h2>
           <p className="text-lg text-gray-400 mb-8">
