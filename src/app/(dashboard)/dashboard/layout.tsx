@@ -1,9 +1,13 @@
-import React from "react";
-
-export default function Layout({ children }: { children: React.ReactNode }) {
+// app/layout.tsx
+import '../../globals.css'
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <section>
-      {children}
-    </section>
+    <html lang="en">
+      <body>{children}</body>
+    </html>
   );
 }
